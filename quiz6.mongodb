@@ -6,23 +6,18 @@ const database = 'aggree';
 // The current database to use.
 use(database);
 
-// Q5: Which country has the highest number of registered user ?
+// Q6: List all unique eye color present in the collection ?
 db.users.aggregate([  
   { 
     $group: { 
-        _id: "$company.location.country",
-        userCount: {
+        _id: "$eyeColor",
+        eyeColorCount: {
           $sum: 1 
         }
     }
-  }, 
-  {
-    $sort: {
-        "userCount": -1
-    }
   },
   { 
-    $limit: 2
+    $count: "numberOfEyeColor" 
   }
 ]);
 

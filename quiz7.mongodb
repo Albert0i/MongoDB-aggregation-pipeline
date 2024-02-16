@@ -6,25 +6,68 @@ const database = 'aggree';
 // The current database to use.
 use(database);
 
-// Q5: Which country has the highest number of registered user ?
+// Q7: What is the average number of tags per user ? 
+// db.users.aggregate([  
+//   { 
+//     $unwind: {
+//       path: "$tags"
+//     } 
+//   },
+//   {
+//     $group: {
+//       _id: "$name",
+//       numberOfTags: {
+//         $sum: 1
+//       }
+//     }
+//   }
+// ]);
+
+// Method 1: use unwind (3 stages)
 db.users.aggregate([  
   { 
-    $group: { 
-        _id: "$company.location.country",
-        userCount: {
-          $sum: 1 
-        }
-    }
-  }, 
+    $unwind: {
+      path: "$tags"
+    } 
+  },
   {
-    $sort: {
-        "userCount": -1
+    $group: {
+      _id: "$_id",
+      numberOfTags: {
+        $sum: 1
+      }
     }
   },
-  { 
-    $limit: 2
+  {
+    $group: {
+      _id: null,
+      averageNumberOfTags: {
+        $avg: "$numberOfTags"
+      }
+    }
   }
 ]);
+
+// Method 2: use addField (2 stages)
+db.users.aggregate([
+    {
+        $addFields: {
+          numberOfTags: {
+            $size: { $ifNull: [ "$tags", [] ] }
+          }
+        }
+    },
+    {
+        $group: {
+          _id: null,
+          averageNumberOfTags: {
+            $avg: "$numberOfTags"
+          }
+        }
+    }
+])
+
+
 
 // The prototype form to create a collection:
 /* db.createCollection( <name>,
