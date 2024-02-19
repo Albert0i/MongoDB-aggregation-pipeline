@@ -1,12 +1,12 @@
-### MongoDB aggregation pipeline <br />--- "Don't worry about being old, worry about thinking old"
+### MongoDB aggregation pipeline <br />─── "Don't worry about being old, worry about thinking old"
 
 ![alt Mr.Grewgious has his suspicions](img/Mr.GrewgiousHasHisSuspicions.jpg)
 
 
 ### I. Semantics 
-SQL Server brings in their unparalleled power in the complete arbitrary of connecting tables from databases without a taint of difficulty. All this empowers administrators in solving complex analytic and statistic issues at large. We write SQL and thus think in SQL regularly without second thought and tend to profess that it is the most natural and only way of doing things. Not until the dawn of NoSQL database, do people realize there is another approach to organize, access and connect the data. 
+SQL Server brings in their unparalleled power in the complete arbitrary of connecting tables from databases without the least taint of difficulty. All this empowers administrators in solving complex analytic and statistic issues at large. We write SQL and thus think in SQL regularly without second thought and tend to profess that it is the most natural and even the only way of doing things. Not until the dawn of NoSQL database, do people realize that there is another approach to organize, access and connect the data. 
 
-To test drive the following statement against Oracle: database: 
+First things first, to test drive the following statement against Oracle: database: 
 ```sql
 EXPLAIN PLAN FOR 
 SELECT sex, round(birdat/10000), count(*), round(avg(mthsal), 2) 
@@ -39,17 +39,18 @@ The running result could be:
 
 ![alt SQL result](img/sql-result.JPG)
 
-As you can see, every thing has a cost, any SQL statement to be executed has to be parse (either soft parse of hard parse), an execution plan is devised and get executed behind the scenes. Typically, aggregation in SQL statement is specified in a kind of Denotational Semantics, ie. you vaguely tell what you want without telling how; while the counterpart is specified in Operational Semantics, ie. a stage-by-stage of execution.  
+As you can see, every thing has a cost, any SQL statement to be executed has to be *parse* (either soft parse of hard parse), so that an *execution plan* is devised and get executed behind the scenes. Typically, aggregation in SQL statement is specified in a form of **Denotational Semantics**, ie. you vaguely tell what you want without telling how; while the NoSQL counterpart is specified in **Operational Semantics**, ie. a stage-by-stage of execution. 
 
 --- 
-- Operational Semantics (操作語義) – the execution of the language is described directly. 
-- Denotational Semantics (指稱語義) – each phrase in the language is interpreted as a conceptual meaning that can be thought of abstractly. 
-- Axiomatic Semantics (公理語義) – meaning to phrases is given by describing the logical axioms that apply to them.
+Aaddendum: 
+- **Operational Semantics** (操作語義) – the execution of the language is described directly. 
+- **Denotational Semantics** (指稱語義) – each phrase in the language is interpreted as a conceptual meaning that can be thought of abstractly. 
+- **Axiomatic Semantics** (公理語義) – meaning to phrases is given by describing the logical axioms that apply to them.
 
 
 ### II. [Aggregation Pipeline](https://www.mongodb.com/docs/manual/core/aggregation-pipeline/)
 
-An aggregation pipeline consists of one or more stages that process documents:
+An aggregation pipeline consists of one or more [stages](https://www.mongodb.com/docs/manual/reference/operator/aggregation-pipeline/#std-label-aggregation-pipeline-operator-reference) that process documents:
 
 - Each stage performs an operation on the input documents. For example, a stage can filter documents, group documents, and calculate values.
 
@@ -57,7 +58,7 @@ An aggregation pipeline consists of one or more stages that process documents:
 
 - An aggregation pipeline can return results for groups of documents. For example, return the total, average, maximum, and minimum values.
 
-Similarly, aggregation in MongoDB could be: 
+Similar query in MongoDB could be: 
 ```
 const database = 'aggree';
 use(database);
@@ -130,7 +131,11 @@ Output:
 16. Lookup exercise. 
 
 
-### IV. Reference
+### IV. Introspection 
+SQL database is well known for it's performance and flexibility in handling large amount of data, but there is a huge cost underneath. Database tables have to be maintained in [Normal form](https://en.wikipedia.org/wiki/Database_normalization); [Schema] must be simple and rigid and thus suffers from capricious change. However, in NoSQL database, *data to be used together should be stored together* so that no additional table joining or lookup is required. In addition, data field can be object of array of objects to avoid small lookup tables scattered around. 
+
+
+### V. Reference
 1. [Complete MongoDB aggregation pipeline course | Hitesh Choudhary](https://youtu.be/vx1C8EyTa7Y)
 
 2. [Working with MongoDB in Visual Studio Code](https://code.visualstudio.com/docs/azure/mongodb)
