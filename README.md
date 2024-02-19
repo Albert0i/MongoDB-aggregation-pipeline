@@ -1,10 +1,59 @@
 ### MongoDB aggregation pipeline 
 
-- Operational Semantics – the execution of the language is described directly. 
-- Denotational Semantics – each phrase in the language is interpreted as a conceptual meaning that can be thought of abstractly. 
-- Axiomatic Semantics – meaning to phrases is given by describing the logical axioms that apply to them.
+![alt Mr.Grewgious has his suspicions](img/Mr.GrewgiousHasHisSuspicions.jpg)
 
-### Quiz 
+
+### I. Semantics 
+SQL Server brings in their unparalleled power in the complete arbitrary of connecting tables from databases without a taint of difficulty. All this empowers administrators in solving analytic and statistic issues at large. We write SQL and think SQL repeatedly without second thought and tend to profess that it is the most natural and unique way of doing things. Not until the dawn of NoSQL database, people realized there is another way to organize and access data. 
+
+To execute the following statement against Oracle: 
+```sql
+EXPLAIN PLAN FOR 
+select sex, birdat, count(*), avg(mthsal) 
+from member 
+where birdat > 19000101 and sex in ('M', 'F') 
+group by sex, birdat order by 1 desc, 2; 
+
+select * from table(dbms_xplan.display);
+```
+And yields: 
+```
+Plan hash value: 3379579560
+ 
+-----------------------------------------------------------------------------
+| Id  | Operation          | Name   | Rows  | Bytes | Cost (%CPU)| Time     |
+-----------------------------------------------------------------------------
+|   0 | SELECT STATEMENT   |        | 21992 |   257K|   685   (1)| 00:00:01 |
+|   1 |  SORT GROUP BY     |        | 21992 |   257K|   685   (1)| 00:00:01 |
+|*  2 |   TABLE ACCESS FULL| MEMBER | 25425 |   297K|   683   (1)| 00:00:01 |
+-----------------------------------------------------------------------------
+ 
+Predicate Information (identified by operation id):
+---------------------------------------------------
+ 
+   2 - filter("BIRDAT">19000101 AND ("SEX"='F' OR "SEX"='M'))
+```
+
+Every thing has a cost, any SQL statement to be executed has to be parse (either soft parse of hard parse), an execution plan is devised and get executed behind the scenes. Typically, aggregation in SQL statement is specified in a kind of Denotational Semantics, ie. you vaguely tell what you want without telling how; while the counterpart is specified in Operational Semantics, ie. stage-by-stage of execution.  
+
+--- 
+- Operational Semantics (操作語義) – the execution of the language is described directly. 
+- Denotational Semantics (指稱語義) – each phrase in the language is interpreted as a conceptual meaning that can be thought of abstractly. 
+- Axiomatic Semantics (公理語義) – meaning to phrases is given by describing the logical axioms that apply to them.
+
+
+### II. [Aggregation Pipeline](https://www.mongodb.com/docs/manual/core/aggregation-pipeline/)
+
+An aggregation pipeline consists of one or more stages that process documents:
+
+- Each stage performs an operation on the input documents. For example, a stage can filter documents, group documents, and calculate values.
+
+- The documents that are output from a stage are passed to the next stage.
+
+- An aggregation pipeline can return results for groups of documents. For example, return the total, average, maximum, and minimum values.
+
+
+### III. Quiz 
 1. How many users are active ?
 2. What is the average age of all users ?
 3. List the top 5 most common favorite fruits among the users ?
@@ -23,16 +72,22 @@
 16. Lookup exercise. 
 
 
-### Reference
+### IV. Reference
 1. [Complete MongoDB aggregation pipeline course | Hitesh Choudhary](https://youtu.be/vx1C8EyTa7Y)
 
 2. [Working with MongoDB in Visual Studio Code](https://code.visualstudio.com/docs/azure/mongodb)
 
-3. [MongoDB $group (aggregation)](https://www.mongodb.com/docs/manual/reference/operator/aggregation/group/)
+3. [MongoDB $match (aggregation)](https://www.mongodb.com/docs/manual/reference/operator/aggregation/match/)
 
-4. [Concepts of Programming Languages - Lecture 6 - Semantics
-](https://faculty.ksu.edu.sa/sites/default/files/06-semantics.pdf)
+4. [MongoDB $group (aggregation)](https://www.mongodb.com/docs/manual/reference/operator/aggregation/group/)
 
-5. [How to Pronounce Fyodor Dostoevsky? (CORRECTLY)](https://youtu.be/hkhVgc-YQrg)
+5. [MongoDB $sort (aggregation)](https://www.mongodb.com/docs/manual/reference/operator/aggregation/sort/)
+
+6. [MongoDB $lookup (aggregation)](https://www.mongodb.com/docs/manual/reference/operator/aggregation/lookup/)
+
+7. [How do I display and read the execution plans for a SQL statement](https://blogs.oracle.com/optimizer/post/how-do-i-display-and-read-the-execution-plans-for-a-sql-statement)
+
+8. [The Mystery of Edwin Drood](https://www.gutenberg.org/cache/epub/564/pg564-images.html)
+
 
 ### EOF (2024/02/19)
