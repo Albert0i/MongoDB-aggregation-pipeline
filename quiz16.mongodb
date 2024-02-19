@@ -6,7 +6,7 @@ const database = 'aggree';
 // The current database to use.
 use(database);
 
-// Q16: Lookup exercise  
+// Q16: Lookup exercise. 
 db.books.aggregate([  
   {
     /**
