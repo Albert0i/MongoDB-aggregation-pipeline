@@ -62,7 +62,15 @@ Similarly, aggregation in MongoDB could be:
 const database = 'aggree';
 use(database);
 db.users.aggregate([
-    {   // Stage 1
+    {   // stage 1 
+        $match: {
+          $or: [
+            { gender: "male" },
+            { gender: "female" }
+          ]          
+        }
+    }, 
+    {   // Stage 2
         $group: {
           _id: ["$gender", "$age"],
           count: {
@@ -73,7 +81,7 @@ db.users.aggregate([
           }
         }
     },
-    {   // Stage 2 
+    {   // Stage 3 
         $sort: {
           "_id.0": -1,
           "_id.1": -1
