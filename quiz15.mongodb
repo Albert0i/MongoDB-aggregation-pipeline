@@ -6,11 +6,19 @@ const database = 'aggree';
 // The current database to use.
 use(database);
 
-// Q14: Find user have both 'enim' and 'id' as their tag ? 
+// Q15: List all the companies located in USA with their corresponding user count ? 
 db.users.aggregate([  
   {
     $match: {
-      "tags" : { $all: ["enim", "id"] }
+      "company.location.country" : "USA"
+    }
+  },
+  {
+    $group: {
+      _id: "$company.title",
+      userCount: {
+        $sum: 1
+      }
     }
   }
 ]);

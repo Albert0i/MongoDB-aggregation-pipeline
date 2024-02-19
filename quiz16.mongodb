@@ -6,11 +6,34 @@ const database = 'aggree';
 // The current database to use.
 use(database);
 
-// Q14: Find user have both 'enim' and 'id' as their tag ? 
-db.users.aggregate([  
+// Q16: Lookup exercise  
+db.books.aggregate([  
   {
-    $match: {
-      "tags" : { $all: ["enim", "id"] }
+    /**
+     * from: The target collection.
+     * localField: The local join field.
+     * foreignField: The target join field.
+     * as: The name for the results.
+     * pipeline: Optional pipeline to run on the foreign collection.
+     * let: Optional variables to use in the pipeline field stages.
+     */
+    $lookup: {
+      from: "authors",
+      localField: "author_id",
+      foreignField: "_id",
+      as: "author_detail"
+    }
+  },
+  {
+    /**
+     * newField: The new field name.
+     * expression: The new field expression.
+     */
+    $addFields: {
+      author_detail: {
+        // $first: "$author_detail"
+        $arrayElemAt: ["$author_detail", 0]
+      }
     }
   }
 ]);
