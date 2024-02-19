@@ -132,7 +132,7 @@ Output:
 
 
 ### IV. Introspection 
-SQL database is well known for it's performance and flexibility in handling large amount of data, but there is a huge cost underneath. Database tables have to be maintained in [Normal form](https://en.wikipedia.org/wiki/Database_normalization); Schema must be simple and rigid and thus suffers from capricious change. However, in NoSQL database, *data to be used together should be stored together* so that no additional table joining or lookup is required. In addition, data field can be object of array of objects to avoid small lookup tables scattered around. 
+SQL database is well known for it's performance and flexibility in handling large amount of data, but there is a huge cost underneath. Database tables have to be maintained in [Normal form](https://en.wikipedia.org/wiki/Database_normalization); Schema must be simple and rigid and thus suffers from capricious change. However, in NoSQL database, *data to be used together should be stored together* so that no additional table joining or lookup is required. In addition, data field can be object or array of objects to avoid small lookup tables scattered around. 
 
 
 ### V. Reference
