@@ -1,4 +1,4 @@
-### MongoDB aggregation pipeline 
+### MongoDB aggregation pipeline <br />--- "Don't worry about being old, worry about thinking old"
 
 ![alt Mr.Grewgious has his suspicions](img/Mr.GrewgiousHasHisSuspicions.jpg)
 
@@ -9,13 +9,15 @@ SQL Server brings in their unparalleled power in the complete arbitrary of conne
 To execute the following statement against Oracle: 
 ```sql
 EXPLAIN PLAN FOR 
-select sex, birdat, count(*), avg(mthsal) 
+select sex, round(birdat/10000), count(*), round(avg(mthsal), 2) 
 from member 
 where birdat > 19000101 and sex in ('M', 'F') 
-group by sex, birdat order by 1 desc, 2; 
+group by sex, round(birdat/10000)
+order by 1 desc, 2; 
 
 select * from table(dbms_xplan.display);
 ```
+
 And yields: 
 ```
 Plan hash value: 3379579560
@@ -33,6 +35,8 @@ Predicate Information (identified by operation id):
  
    2 - filter("BIRDAT">19000101 AND ("SEX"='F' OR "SEX"='M'))
 ```
+
+![alt SQL result](img/sql-result.JPG)
 
 Every thing has a cost, any SQL statement to be executed has to be parse (either soft parse of hard parse), an execution plan is devised and get executed behind the scenes. Typically, aggregation in SQL statement is specified in a kind of Denotational Semantics, ie. you vaguely tell what you want without telling how; while the counterpart is specified in Operational Semantics, ie. stage-by-stage of execution.  
 
@@ -52,6 +56,51 @@ An aggregation pipeline consists of one or more stages that process documents:
 
 - An aggregation pipeline can return results for groups of documents. For example, return the total, average, maximum, and minimum values.
 
+Similarly, aggregation in MongoDB could be: 
+```
+const database = 'aggree';
+use(database);
+db.users.aggregate([
+    {   // Stage 1
+        $group: {
+          _id: ["$gender", "$age"],
+          count: {
+            $sum: 1
+          },
+          average: {
+            $avg: "$mthsal"
+          }
+        }
+    },
+    {   // Stage 2 
+        $sort: {
+          "_id.0": -1,
+          "_id.1": -1
+        }        
+    }
+]);
+```
+Output: 
+```
+[
+  {
+    "_id": [
+      "male",
+      40
+    ],
+    "count": 21,
+    "average": null
+  },
+  {
+    "_id": [
+      "male",
+      39
+    ],
+    "count": 27,
+    "average": null
+  },
+. . . 
+```
 
 ### III. Quiz 
 1. How many users are active ?
