@@ -4,21 +4,21 @@
 
 
 ### I. Semantics 
-SQL Server brings in their unparalleled power in the complete arbitrary of connecting tables from databases without a taint of difficulty. All this empowers administrators in solving analytic and statistic issues at large. We write SQL and think SQL repeatedly without second thought and tend to profess that it is the most natural and unique way of doing things. Not until the dawn of NoSQL database, people realized there is another way to organize and access data. 
+SQL Server brings in their unparalleled power in the complete arbitrary of connecting tables from databases without a taint of difficulty. All this empowers administrators in solving complex analytic and statistic issues at large. We write SQL and thus think in SQL regularly without second thought and tend to profess that it is the most natural and only way of doing things. Not until the dawn of NoSQL database, do people realize there is another approach to organize, access and connect the data. 
 
-To execute the following statement against Oracle: 
+To test drive the following statement against Oracle: database: 
 ```sql
 EXPLAIN PLAN FOR 
-select sex, round(birdat/10000), count(*), round(avg(mthsal), 2) 
-from member 
-where birdat > 19000101 and sex in ('M', 'F') 
-group by sex, round(birdat/10000)
-order by 1 desc, 2; 
+SELECT sex, round(birdat/10000), count(*), round(avg(mthsal), 2) 
+FROM member 
+WHERE birdat > 19000101 AND sex IN ('M', 'F') 
+GROUP BY sex, round(birdat/10000)
+ORDER BY 1 DESC, 2; 
 
-select * from table(dbms_xplan.display);
+SELECT * FROM table(dbms_xplan.display);
 ```
 
-And yields: 
+Output: 
 ```
 Plan hash value: 3379579560
  
@@ -35,10 +35,11 @@ Predicate Information (identified by operation id):
  
    2 - filter("BIRDAT">19000101 AND ("SEX"='F' OR "SEX"='M'))
 ```
+The running result could be: 
 
 ![alt SQL result](img/sql-result.JPG)
 
-Every thing has a cost, any SQL statement to be executed has to be parse (either soft parse of hard parse), an execution plan is devised and get executed behind the scenes. Typically, aggregation in SQL statement is specified in a kind of Denotational Semantics, ie. you vaguely tell what you want without telling how; while the counterpart is specified in Operational Semantics, ie. stage-by-stage of execution.  
+As you can see, every thing has a cost, any SQL statement to be executed has to be parse (either soft parse of hard parse), an execution plan is devised and get executed behind the scenes. Typically, aggregation in SQL statement is specified in a kind of Denotational Semantics, ie. you vaguely tell what you want without telling how; while the counterpart is specified in Operational Semantics, ie. a stage-by-stage of execution.  
 
 --- 
 - Operational Semantics (操作語義) – the execution of the language is described directly. 
