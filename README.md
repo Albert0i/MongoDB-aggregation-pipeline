@@ -35,9 +35,47 @@ Predicate Information (identified by operation id):
  
    2 - filter("BIRDAT">19000101 AND ("SEX"='F' OR "SEX"='M'))
 ```
-The running result could be: 
 
-![alt SQL result](img/sql-result.JPG)
+Let's check another more complicated example: 
+```sql
+EXPLAIN PLAN FOR
+SELECT round(f2.npotwdt/100) as yearmonth, f1.ogtabv as dept,               
+       sum(NPODAYHR) as dayhour, sum(NPODAYAM) as dayamount,                 
+       sum(NPONIGHR) as nighthour, sum(NPONIGAM) as nightamount
+FROM master f1, detail f2        
+WHERE f1.npotnum=f2.npotnum AND f1.npotseq1=f2.npotseq1 AND  
+      f1.npotsts IN ('V', 'T') and f2.npotsts='A' AND f1.empnum=f2.empnum AND  
+      round(f2.npotwdt/10000)=2019                      
+GROUP BY round(f2.npotwdt/100), f1.ogtabv              
+ORDER by 1, 2;      
+```
+
+Output:  
+```
+Plan hash value: 3591893116
+ 
+-------------------------------------------------------------------------------
+| Id  | Operation           | Name    | Rows  | Bytes | Cost (%CPU)| Time     |
+-------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT    |         |  5668 |   974K|   892   (1)| 00:00:01 |
+|   1 |  SORT GROUP BY      |         |  5668 |   974K|   892   (1)| 00:00:01 |
+|*  2 |   HASH JOIN         |         |  5668 |   974K|   891   (1)| 00:00:01 |
+|*  3 |    TABLE ACCESS FULL| NPOTCDT |  5668 |   642K|   618   (1)| 00:00:01 |
+|*  4 |    TABLE ACCESS FULL| NPOTCMS | 39746 |  2328K|   273   (1)| 00:00:01 |
+-------------------------------------------------------------------------------
+ 
+Predicate Information (identified by operation id):
+---------------------------------------------------
+ 
+   2 - access("F1"."NPOTNUM"="F2"."NPOTNUM" AND 
+              "F1"."NPOTSEQ1"="F2"."NPOTSEQ1" AND "F1"."EMPNUM"="F2"."EMPNUM")
+   3 - filter("F2"."NPOTSTS"='A' AND ROUND("F2"."NPOTWDT"/10000)=2023)
+   4 - filter("F1"."NPOTSTS"='T' OR "F1"."NPOTSTS"='V')
+ 
+Note
+-----
+   - dynamic statistics used: dynamic sampling (level=2)
+```
 
 As you can see, every thing has a cost, any SQL statement to be executed has to be *parse* (either soft parse of hard parse), so that an *execution plan* is devised and get executed behind the scenes. Typically, aggregation in SQL statement is specified in a form of **Denotational Semantics**, ie. you vaguely tell what you want without telling how; while the NoSQL counterpart is specified in **Operational Semantics**, ie. a stage-by-stage of execution. 
 

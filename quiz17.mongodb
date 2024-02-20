@@ -1,0 +1,66 @@
+// MongoDB Playground
+// Use Ctrl+Space inside a snippet or a string literal to trigger completions.
+
+const database = 'aggree';
+
+// The current database to use.
+use(database);
+
+// Q16: Lookup exercise. 
+db.users.aggregate([
+    {   // stage 1 
+        $match: {
+          $or: [
+            { gender: "male" },
+            { gender: "female" }
+          ]          
+        }
+    }, 
+    {   // Stage 2
+        $group: {
+          _id: ["$gender", "$age"],
+          count: {
+            $sum: 1
+          },
+          average: {
+            $avg: "$mthsal"
+          }
+        }
+    },
+    {   // Stage 3 
+        $sort: {
+          "_id.0": -1,
+          "_id.1": -1
+        }        
+    }
+]);
+
+
+// The prototype form to create a collection:
+/* db.createCollection( <name>,
+  {
+    capped: <boolean>,
+    autoIndexId: <boolean>,
+    size: <number>,
+    max: <number>,
+    storageEngine: <document>,
+    validator: <document>,
+    validationLevel: <string>,
+    validationAction: <string>,
+    indexOptionDefaults: <document>,
+    viewOn: <string>,
+    pipeline: <pipeline>,
+    collation: <document>,
+    writeConcern: <document>,
+    timeseries: { // Added in MongoDB 5.0
+      timeField: <string>, // required for time series collections
+      metaField: <string>,
+      granularity: <string>
+    },
+    expireAfterSeconds: <number>,
+    clusteredIndex: <document>, // Added in MongoDB 5.3
+  }
+)*/
+
+// More information on the `createCollection` command can be found at:
+// https://www.mongodb.com/docs/manual/reference/method/db.createCollection/
