@@ -98,12 +98,12 @@ An aggregation pipeline consists of one or more [stages](https://www.mongodb.com
 
 Similar query in MongoDB could be: 
 ```
-const database = 'db2';
+const database = 'mydb';
 
 // The current database to use.
 use(database);
 
-db.memsoc.aggregate([  
+db.member.aggregate([  
   { // Stage 1
     $match: {
       birdat: { $gt: 19000101 },
