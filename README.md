@@ -3,6 +3,10 @@
 ![alt Mr.Grewgious has his suspicions](img/Mr.GrewgiousHasHisSuspicions.jpg)
 
 
+### Prologue 
+> —both when the tide ebbed, and when it flowed again—
+
+
 ### I. Semantics 
 SQL Server brings in their unparalleled power in the complete arbitrary of connecting tables from databases without the least taint of difficulty. All this empowers administrators in solving complex analytic and statistic issues at large. We write SQL and thus think in SQL regularly without second thought and tend to profess that it is the most natural and even the only way of doing things. Not until the dawn of NoSQL database, do people realize that there is another approach to organize, access and connect the data. 
 
@@ -238,4 +242,7 @@ SQL database is well known for it's performance and flexibility in handling larg
 8. [The Mystery of Edwin Drood](https://www.gutenberg.org/cache/epub/564/pg564-images.html)
 
 
-### EOF (2024/02/19)
+### Epilogue
+
+
+### EOF (2024/02/20)
