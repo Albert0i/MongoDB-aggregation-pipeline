@@ -36,7 +36,7 @@ Predicate Information (identified by operation id):
    2 - filter("BIRDAT">19000101 AND ("SEX"='F' OR "SEX"='M'))
 ```
 
-Let's check another more complicated example: 
+Let's check an even more complicated example: 
 ```sql
 EXPLAIN PLAN FOR
 SELECT round(f2.npotwdt/100) as yearmonth, f1.ogtabv as dept,               
@@ -60,8 +60,8 @@ Plan hash value: 3591893116
 |   0 | SELECT STATEMENT    |         |  5668 |   974K|   892   (1)| 00:00:01 |
 |   1 |  SORT GROUP BY      |         |  5668 |   974K|   892   (1)| 00:00:01 |
 |*  2 |   HASH JOIN         |         |  5668 |   974K|   891   (1)| 00:00:01 |
-|*  3 |    TABLE ACCESS FULL| NPOTCDT |  5668 |   642K|   618   (1)| 00:00:01 |
-|*  4 |    TABLE ACCESS FULL| NPOTCMS | 39746 |  2328K|   273   (1)| 00:00:01 |
+|*  3 |    TABLE ACCESS FULL| DETAIL  |  5668 |   642K|   618   (1)| 00:00:01 |
+|*  4 |    TABLE ACCESS FULL| MASTER  | 39746 |  2328K|   273   (1)| 00:00:01 |
 -------------------------------------------------------------------------------
  
 Predicate Information (identified by operation id):
@@ -98,56 +98,71 @@ An aggregation pipeline consists of one or more [stages](https://www.mongodb.com
 
 Similar query in MongoDB could be: 
 ```
-const database = 'aggree';
+const database = 'db2';
+
+// The current database to use.
 use(database);
-db.users.aggregate([
-    {   // stage 1 
-        $match: {
-          $or: [
-            { gender: "male" },
-            { gender: "female" }
-          ]          
-        }
-    }, 
-    {   // Stage 2
-        $group: {
-          _id: ["$gender", "$age"],
-          count: {
-            $sum: 1
-          },
-          average: {
-            $avg: "$mthsal"
-          }
-        }
-    },
-    {   // Stage 3 
-        $sort: {
-          "_id.0": -1,
-          "_id.1": -1
-        }        
+
+db.memsoc.aggregate([  
+  { // Stage 1
+    $match: {
+      birdat: { $gt: 19000101 },
+      sex:  { $in:  ['M', 'F'] }
     }
+  },
+  { // Stage 2
+    $addFields: {
+      yearOfBirth: 
+      {
+        $floor: { $divide: [ "$birdat" , 10000] }
+      }      
+    }
+  },
+  { // Stage 3 
+    $group: {
+      _id: {sex: "$sex" , yearOfBirth: "$yearOfBirth"}, 
+      count: { $sum: 1 }, 
+      average: { $avg: "$mthsal" }
+    }
+  },
+  {
+    // Stage 4
+    $sort: {
+      "_id.sex": -1,
+      "_id.yearOfBirth": 1
+    }
+  }
 ]);
 ```
 Output: 
 ```
 [
   {
-    "_id": [
-      "male",
-      40
-    ],
-    "count": 21,
-    "average": null
+    "_id": {
+      "sex": "M",
+      "yearOfBirth": 1921
+    },
+    "count": 1,
+    "average": 1500
   },
   {
-    "_id": [
-      "male",
-      39
-    ],
-    "count": 27,
-    "average": null
+    "_id": {
+      "sex": "M",
+      "yearOfBirth": 1923
+    },
+    "count": 1,
+    "average": 4052
+  },
+  {
+    "_id": {
+      "sex": "M",
+      "yearOfBirth": 1924
+    },
+    "count": 2,
+    "average": 1587.5
   },
 . . . 
+]
 ```
 
 ### III. Quiz 

@@ -1,0 +1,68 @@
+// MongoDB Playground
+// Use Ctrl+Space inside a snippet or a string literal to trigger completions.
+
+const database = 'db2';
+
+// The current database to use.
+use(database);
+
+// Query example 1
+db.memsoc.aggregate([  
+  { // Stage 1
+    $match: {
+      birdat: { $gt: 19000101 },
+      sex:  { $in:  ['M', 'F'] }
+    }
+  },
+  { // Stage 2
+    $addFields: {
+      yearOfBirth: 
+      {
+        $floor: { $divide: [ "$birdat" , 10000] }
+      }      
+    }
+  },
+  { // Stage 3 
+    $group: {
+      _id: {sex: "$sex" , yearOfBirth: "$yearOfBirth"}, 
+      count: { $sum: 1 }, 
+      average: { $avg: "$mthsal" }
+    }
+  },
+  {
+    // Stage 4
+    $sort: {
+      "_id.sex": -1,
+      "_id.yearOfBirth": 1
+    }
+  }
+]);
+
+// The prototype form to create a collection:
+/* db.createCollection( <name>,
+  {
+    capped: <boolean>,
+    autoIndexId: <boolean>,
+    size: <number>,
+    max: <number>,
+    storageEngine: <document>,
+    validator: <document>,
+    validationLevel: <string>,
+    validationAction: <string>,
+    indexOptionDefaults: <document>,
+    viewOn: <string>,
+    pipeline: <pipeline>,
+    collation: <document>,
+    writeConcern: <document>,
+    timeseries: { // Added in MongoDB 5.0
+      timeField: <string>, // required for time series collections
+      metaField: <string>,
+      granularity: <string>
+    },
+    expireAfterSeconds: <number>,
+    clusteredIndex: <document>, // Added in MongoDB 5.3
+  }
+)*/
+
+// More information on the `createCollection` command can be found at:
+// https://www.mongodb.com/docs/manual/reference/method/db.createCollection/
