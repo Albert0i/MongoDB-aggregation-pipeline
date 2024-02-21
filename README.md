@@ -225,6 +225,8 @@ These are just a few examples of the aggregation operators available in MongoDB.
 ### V. Introspection 
 SQL database is well known for it's performance and flexibility in handling large amount of data, but there is a huge cost underneath. Database tables have to be maintained in [Normal form](https://en.wikipedia.org/wiki/Database_normalization); Schema must be simple and rigid and thus suffers from capricious change. However, in NoSQL database, *data to be used together should be stored together* so that no additional table joining or lookup is required. In addition, data field can be object or array of objects to avoid here and there scattered lookup everywhere...
 
+Seasoned full-stacked developers would twist SQL statements as much as possible so as to alleviate drudgery on front-end development. For sure, aggregation pipeline is the new battlefield for back-end developers and continues to play an important part in NoSQL database. 
+
 
 ### VI. Reference
 1. [Complete MongoDB aggregation pipeline course | Hitesh Choudhary](https://youtu.be/vx1C8EyTa7Y)
