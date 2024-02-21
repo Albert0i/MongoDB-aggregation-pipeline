@@ -308,7 +308,7 @@ Output:
 
 **caveat**
 
-While preparing aggregation pipeline examples, three tables have been converted from Oracle to MongoDB. Imitating selection, grouping and sorting criterias which is an *unfair* comparison for no advanced features on MongoDB is used. Relational database advocates to separate tables as small as possible while NoSQL database encourages embedding objects in schema design. This is because traditional programming languages can't handle database field of object or array of object properly. Once upon a time, there were [Object-Oriented Database](https://phoenixnap.com/kb/object-oriented-database) and [Object-Relational Database](https://www.tutorialspoint.com/object-and-object-relational-databases), but they are not on the same level of NoSQL Database. 
+While preparing aggregation pipeline examples, three tables have been converted from Oracle to MongoDB. Imitating selection, grouping and sorting criterias which is an *unfair* comparison for no advanced features on MongoDB is used. Relational database advocates to separate tables as small as possible while NoSQL Database encourages embedding objects in schema design. This is because traditional programming languages can't handle database field of object or array of object properly. Once upon a time, there were [Object-Oriented Database](https://phoenixnap.com/kb/object-oriented-database) and [Object-Relational Database](https://www.tutorialspoint.com/object-and-object-relational-databases), but they are not on the same level of NoSQL Database. 
 
 
 ### IV. MongoDB aggregation operators summary
@@ -345,9 +345,9 @@ These are just a few examples of the aggregation operators available in MongoDB.
 
 
 ### V. Introspection 
-SQL database is well known for it's performance and flexibility in handling large amount of data, but there is a huge cost underneath. Database tables have to be maintained in [Normal form](https://en.wikipedia.org/wiki/Database_normalization); Schema must be simple and rigid and thus suffers from capricious change. However, in NoSQL database, *data to be used together should be stored together* so that no additional table joining or lookup is required. In addition, data field can be object or array of objects to avoid here and there scattered lookup everywhere...
+SQL database is well known for it's performance and flexibility in handling large amount of data, but there is a huge cost underneath. Database tables have to be maintained in [Normal form](https://en.wikipedia.org/wiki/Database_normalization); Schema must be simple and rigid and thus suffers from capricious change. However, in NoSQL Database, *data to be used together should be stored together* so that no additional table joining or lookup is required. In addition, data field can be object or array of objects to avoid here and there scattered lookup everywhere...
 
-Seasoned full-stacked developers would twist SQL statements as much as possible so as to alleviate drudgery on front-end development. For sure, aggregation pipeline is the new battlefield for back-end developers and continues to play an important part in NoSQL database. 
+Seasoned full-stacked developers would twist SQL statements as much as possible so as to alleviate drudgery on front-end development. For sure, aggregation pipeline is the new battlefield for back-end developers and continues to play an important part in NoSQL Database. 
 
 
 ### VI. Reference
