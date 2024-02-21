@@ -7,10 +7,30 @@
 > —both when the tide ebbed, and when it flowed again—
 
 
-### I. Semantics 
-SQL Server brings in their unparalleled power in the complete arbitrary of connecting tables from databases without the least taint of difficulty. All this empowers administrators in solving complex analytic and statistic issues at large. We write SQL and thus think in SQL regularly without second thought and tend to profess that it is the most natural and even the only way of doing things. Not until the dawn of NoSQL database, do people realize that there is another approach to organize, access and connect the data. 
+### I. Quiz 
+1. How many users are active ?
+2. What is the average age of all users ?
+3. List the top 5 most common favorite fruits among the users ?
+4. Find the total number of male and female ?
+5. Which country has the highest number of registered user ?
+6. List all unique eye color present in the collection ?
+7. What is the average number of tags per user ? 
+8. How many users have 'enim' as one of their tags ? 
+9. What are the name and age of user who are inactive and have 'velit' as a tag ? 
+10. How many users have a phone number starting with '+1 (940)' ? 
+11. Who has registered the most recently ? 
+12. Categorize users by their favorite fruit ? 
+13. How many users have 'ad' as the second tag in their list of tags ? 
+14. Find user have both 'enim' and 'id' as their tag ? 
+15. List all the companies located in USA with their corresponding user count ? 
+16. Lookup exercise. 
 
-First things first, to test drive the following statement against Oracle: database: 
+
+### II. Semantics
+
+[Relational Database](https://www.oracle.com/database/what-is-a-relational-database/) brings in their unparalleled power in the complete arbitrary of connecting tables among databases without the least taint of awkwardness. All and all empowers developers in solving complicated analytic and statistic issues at large. People writes [SQL](https://www.w3schools.com/sql/sql_intro.asp) and thus thinks in SQL regularly without second thought and been tempted to profess that it is the most natural and even the only way in solving problemss. Not until the dawn of [NoSQL Database](https://aws.amazon.com/nosql/), do people aware and become palpable of the existence of other approach to organize and manipulate the data. 
+
+First things first, to test drive the following statement against [Oracle: 19c](https://docs.oracle.com/en/database/oracle/oracle-database/19/index.html): 
 ```sql
 EXPLAIN PLAN FOR 
 SELECT sex, round(birdat/10000), count(*), round(avg(mthsal), 2) 
@@ -81,7 +101,7 @@ Note
    - dynamic statistics used: dynamic sampling (level=2)
 ```
 
-As you can see, every thing has a cost, any SQL statement to be executed has to be *parse* (either soft parse of hard parse), so that an *execution plan* is devised and get executed behind the scenes. Typically, aggregation in SQL statement is specified in a form of **Denotational Semantics**, ie. you vaguely tell what you want without telling how; while the NoSQL counterpart is specified in **Operational Semantics**, ie. a stage-by-stage of execution. 
+As you can see, every thing has a COST, any SQL statement to be executed has to be *parse* (either soft-parse or hard-parse), so that an *execution plan* is devised and get executed behind the scenes. Typically, SQL statement is depicted in a form of **Denotational Semantics**, ie. you *vaguely* tell what you want without saying how; while the NoSQL counterpart is specified in **Operational Semantics**, ie. a stage-by-stage of execution plan. 
 
 --- 
 Aaddendum: 
@@ -90,7 +110,7 @@ Aaddendum:
 - **Axiomatic Semantics** (公理語義) – meaning to phrases is given by describing the logical axioms that apply to them.
 
 
-### II. [Aggregation Pipeline](https://www.mongodb.com/docs/manual/core/aggregation-pipeline/)
+### III. [Aggregation Pipeline](https://www.mongodb.com/docs/manual/core/aggregation-pipeline/)
 
 An aggregation pipeline consists of one or more [stages](https://www.mongodb.com/docs/manual/reference/operator/aggregation-pipeline/#std-label-aggregation-pipeline-operator-reference) that process documents:
 
@@ -169,25 +189,6 @@ Output:
 ]
 ```
 
-### III. Quiz 
-1. How many users are active ?
-2. What is the average age of all users ?
-3. List the top 5 most common favorite fruits among the users ?
-4. Find the total number of male and female ?
-5. Which country has the highest number of registered user ?
-6. List all unique eye color present in the collection ?
-7. What is the average number of tags per user ? 
-8. How many users have 'enim' as one of their tags ? 
-9. What are the name and age of user who are inactive and have 'velit' as a tag ? 
-10. How many users have a phone number starting with '+1 (940)' ? 
-11. Who has registered the most recently ? 
-12. Categorize users by their favorite fruit ? 
-13. How many users have 'ad' as the second tag in their list of tags ? 
-14. Find user have both 'enim' and 'id' as their tag ? 
-15. List all the companies located in USA with their corresponding user count ? 
-16. Lookup exercise. 
-
-
 ### IV. MongoDB aggregation operators summary
 
 Here's a summary of some commonly used aggregation operators in MongoDB:
@@ -224,6 +225,7 @@ These are just a few examples of the aggregation operators available in MongoDB.
 ### V. Introspection 
 SQL database is well known for it's performance and flexibility in handling large amount of data, but there is a huge cost underneath. Database tables have to be maintained in [Normal form](https://en.wikipedia.org/wiki/Database_normalization); Schema must be simple and rigid and thus suffers from capricious change. However, in NoSQL database, *data to be used together should be stored together* so that no additional table joining or lookup is required. In addition, data field can be object or array of objects to avoid here and there scattered lookup everywhere...
 
+
 ### VI. Reference
 1. [Complete MongoDB aggregation pipeline course | Hitesh Choudhary](https://youtu.be/vx1C8EyTa7Y)
 
@@ -245,4 +247,4 @@ SQL database is well known for it's performance and flexibility in handling larg
 ### Epilogue
 
 
-### EOF (2024/02/20)
+### EOF (2024/02/21)
