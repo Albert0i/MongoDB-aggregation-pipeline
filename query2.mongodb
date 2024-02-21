@@ -48,7 +48,8 @@ db.npotcms.aggregate([
   },
   { // Stage 5
     $match: {
-      year: 2019
+      year: 2019,
+      "npotcdt.npotsts": "A"
     }
   }, 
   { // Stage 6

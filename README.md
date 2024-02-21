@@ -189,11 +189,121 @@ Output:
 ]
 ```
 
-Complicated SQL yields even more complicated aggregation pipeline: 
+The second SQL yields even more complicated aggregation pipeline: 
 ```
+const database = 'mydb';
+
+// The current database to use.
+use(database);
+
+db.master.aggregate([  
+  { // Stage 1
+    $match: {
+      npotsts: { $in: [ "V", "T" ] }
+    }
+  },
+  { // Stage 2 - multiple fields lookup (from ChatGPT)
+    $lookup: {
+      from: "master",
+      let: {
+        npotnum: "$npotnum",
+        npotseq1: "$npotseq1",
+        empnum: "$empnum",
+      },
+      pipeline: [
+        {
+          $match: {
+            $expr: {
+              $and: [
+                { $eq: ["$npotnum", "$$npotnum"] },
+                { $eq: ["$npotseq1", "$$npotseq1"] },
+                { $eq: ["$empnum", "$$empnum"] }
+              ]
+            }
+          }
+        }
+      ],
+      as: "detail"
+    }
+  },
+  { // Stage 3
+    $unwind: "$detail"
+  },
+  { // Stage 4 
+    $addFields: {
+      year: { $floor: { $divide: [ "$detail.npotwdt" , 10000] } }, 
+      yearMonth: { $floor: { $divide: [ "$detail.npotwdt" , 100] } }
+    }
+  },
+  { // Stage 5
+    $match: {
+      year: 2019,
+      "detail.npotsts": "A"
+    }
+  }, 
+  { // Stage 6
+    $group: {
+      _id: {
+        yearMonth: "$yearMonth", 
+        ogtabv: "$ogtabv"
+      },
+      dayhour: {
+        $sum: "$detail.npodayhr"
+      }, 
+      dayamount: {
+        $sum: "$detail.npodayam"
+      },
+      nighthour: {
+        $sum: "$detail.nponighr"
+      }, 
+      nightamount: {
+        $sum: "$detail.nponigam"
+      }      
+    }
+  },
+  { // Stage 7
+    $sort: {
+      "_id.yearMonth": 1,
+      "_id.ogtabv": 1 
+    }
+  }
+]);
 ```
 Output:
 ```
+[
+  {
+    "_id": {
+      "yearMonth": 201901,
+      "ogtabv": "DC1"
+    },
+    "dayhour": 117,
+    "dayamount": 46208,
+    "nighthour": 201,
+    "nightamount": 93372
+  },
+  {
+    "_id": {
+      "yearMonth": 201901,
+      "ogtabv": "FNC"
+    },
+    "dayhour": 14,
+    "dayamount": 7280,
+    "nighthour": 24,
+    "nightamount": 14047
+  },
+  {
+    "_id": {
+      "yearMonth": 201901,
+      "ogtabv": "RDX"
+    },
+    "dayhour": 4,
+    "dayamount": 1406,
+    "nighthour": 0,
+    "nightamount": 0
+  },
+. . .   
+]  
 ```
 
 **caveat**
