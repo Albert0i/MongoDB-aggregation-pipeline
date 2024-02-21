@@ -269,6 +269,9 @@ db.master.aggregate([
   }
 ]);
 ```
+
+![alt 2000YearsLater](img/2000YearsLater.jpg)
+
 Output:
 ```
 [
