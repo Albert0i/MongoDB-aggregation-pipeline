@@ -15,7 +15,7 @@ db.npotcms.aggregate([
   },
   { // Stage 2 - multiple fields lookup (from ChatGPT)
     $lookup: {
-      from: "npotcms",
+      from: "npotcdt",
       let: {
         npotnum: "$npotnum",
         npotseq1: "$npotseq1",

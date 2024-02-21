@@ -204,7 +204,7 @@ db.master.aggregate([
   },
   { // Stage 2 - multiple fields lookup (from ChatGPT)
     $lookup: {
-      from: "master",
+      from: "detail",
       let: {
         npotnum: "$npotnum",
         npotseq1: "$npotseq1",
@@ -306,10 +306,6 @@ Output:
 ]  
 ```
 
-**caveat**
-
-While preparing aggregation pipeline examples, three tables have been converted from Oracle to MongoDB. Imitating selection, grouping and sorting criterias which is an *unfair* comparison for no advanced features on MongoDB is used. Relational database advocates to separate tables as small as possible while NoSQL Database encourages embedding objects in schema design. This is because traditional programming languages can't handle database field of object or array of object properly. Once upon a time, there were [Object-Oriented Database](https://phoenixnap.com/kb/object-oriented-database) and [Object-Relational Database](https://www.tutorialspoint.com/object-and-object-relational-databases), but they are not on the same level of NoSQL Database. 
-
 
 ### IV. MongoDB aggregation operators summary
 
@@ -369,7 +365,8 @@ Seasoned full-stacked developers would twist SQL statements as much as possible 
 
 
 ### Epilogue
-```
-```
+
+While preparing aggregation pipeline examples, three tables have been converted from Oracle to MongoDB. Imitating selection, grouping and sorting criterias which is an *unfair* comparison for no advanced features on MongoDB is used. Relational database advocates to separate tables as small as possible while NoSQL Database encourages embedding objects in schema design. This is because traditional programming languages can't handle database field of object or array of object properly. Once upon a time, there were [Object-Oriented Database](https://phoenixnap.com/kb/object-oriented-database) and [Object-Relational Database](https://www.tutorialspoint.com/object-and-object-relational-databases), but they are not on the same level of NoSQL Database. 
+
 
 ### EOF (2024/02/21)
