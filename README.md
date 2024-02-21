@@ -197,6 +197,7 @@ Output:
 ```
 
 **caveat**
+
 While preparing aggregation pipeline examples, three tables have been converted from Oracle to MongoDB. Imitating selection, grouping and sorting criterias which is an *unfair* comparison for no advanced features on MongoDB is used. Relational database advocates to separate tables as small as possible while NoSQL database encourages embedding objects in schema design. This is because traditional programming languages can't handle database field of object or array of object properly. Once upon a time, there were [Object-Oriented Database](https://phoenixnap.com/kb/object-oriented-database) and (Object-Relational Database)[https://www.tutorialspoint.com/object-and-object-relational-databases], but they are not the same level of NoSQL Database. 
 
 
