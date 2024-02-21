@@ -71,7 +71,7 @@ WHERE f1.npotnum=f2.npotnum AND f1.npotseq1=f2.npotseq1 AND
       f1.npotsts IN ('V', 'T') and f2.npotsts='A' AND f1.empnum=f2.empnum AND  
       round(f2.npotwdt/10000)=2019                      
 GROUP BY round(f2.npotwdt/100), f1.ogtabv              
-ORDER by 1, 2;      
+ORDER by 1, 2;
 ```
 
 Output:  

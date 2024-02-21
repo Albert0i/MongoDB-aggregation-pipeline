@@ -6,11 +6,75 @@ const database = 'db2';
 // The current database to use.
 use(database);
 
-// Query example 1
+// Query example 2
 db.npotcms.aggregate([  
   { // Stage 1
     $match: {
       npotsts: { $in: [ "V", "T" ] }
+    }
+  },
+  { // Stage 2 - multiple fields lookup (from ChatGPT)
+    $lookup: {
+      from: "npotcdt",
+      let: {
+        npotnum: "$npotnum",
+        npotseq1: "$npotseq1",
+        empnum: "$empnum",
+      },
+      pipeline: [
+        {
+          $match: {
+            $expr: {
+              $and: [
+                { $eq: ["$npotnum", "$$npotnum"] },
+                { $eq: ["$npotseq1", "$$npotseq1"] },
+                { $eq: ["$empnum", "$$empnum"] }
+              ]
+            }
+          }
+        }
+      ],
+      as: "npotcdt"
+    }
+  },
+  { // Stage 3
+    $unwind: "$npotcdt"
+  },
+  { // Stage 4 
+    $addFields: {
+      year: { $floor: { $divide: [ "$npotcdt.npotwdt" , 10000] } }, 
+      yearMonth: { $floor: { $divide: [ "$npotcdt.npotwdt" , 100] } }
+    }
+  },
+  { // Stage 5
+    $match: {
+      year: 2019
+    }
+  }, 
+  { // Stage 6
+    $group: {
+      _id: {
+        yearMonth: "$yearMonth", 
+        ogtabv: "$ogtabv"
+      },
+      dayhour: {
+        $sum: "$npotcdt.npodayhr"
+      }, 
+      dayamount: {
+        $sum: "$npotcdt.npodayam"
+      },
+      nighthour: {
+        $sum: "$npotcdt.nponighr"
+      }, 
+      nightamount: {
+        $sum: "$npotcdt.nponigam"
+      }      
+    }
+  },
+  { // Stage 7
+    $sort: {
+      "_id.yearMonth": 1,
+      "_id.ogtabv": 1 
     }
   }
 ]);
