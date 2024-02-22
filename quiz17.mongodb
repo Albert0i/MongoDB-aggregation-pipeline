@@ -6,33 +6,41 @@ const database = 'aggree';
 // The current database to use.
 use(database);
 
-// Q16: Lookup exercise. 
+// Q17: List all active users with tags named sorted. 
+// db.users.aggregate([
+//   {
+//     $addFields: {
+//       sortedTags: { $sort: "$tags" }
+//     }
+//   }
+// ])
+
 db.users.aggregate([
-    {   // stage 1 
-        $match: {
-          $or: [
-            { gender: "male" },
-            { gender: "female" }
-          ]          
-        }
-    }, 
-    {   // Stage 2
-        $group: {
-          _id: ["$gender", "$age"],
-          count: {
-            $sum: 1
-          },
-          average: {
-            $avg: "$mthsal"
-          }
-        }
+    { // stage 1 
+        $match: { isActive: true }
     },
-    {   // Stage 3 
-        $sort: {
-          "_id.0": -1,
-          "_id.1": -1
-        }        
-    }
+    { // Stage 2
+      $unwind: "$tags"      
+    },
+    { // Stage 3
+      $sort: {
+        name: 1,
+        tags: 1
+      }
+    },
+    { // Stage 4
+      $group: {        
+        _id: "$name",
+        tags: {
+          $push: "$tags"
+        }
+      }
+    },
+    { // Stage 5
+      $sort: {
+        _id: 1
+      }
+    }    
 ]);
 
 
