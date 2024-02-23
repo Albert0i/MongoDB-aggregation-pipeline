@@ -395,5 +395,49 @@ Seasoned full-stacked developers would twist SQL statements as much as possible 
 
 While preparing aggregation pipeline examples, three tables have been converted from Oracle to MongoDB. Imitating selection, grouping and sorting criterias which is an *unfair* comparison for no advanced features on MongoDB is used. Relational database advocates to separate tables as small as possible while NoSQL Database encourages embedding objects in schema design. This is because traditional programming languages can't handle database field of object or array of object properly. Once upon a time, there were [Object-Oriented Database](https://phoenixnap.com/kb/object-oriented-database) and [Object-Relational Database](https://www.tutorialspoint.com/object-and-object-relational-databases), but they are not on the same level of NoSQL Database. 
 
+### PS: Original version of example1 
 
-### EOF (2024/02/22)
+```
+EXPLAIN PLAN FOR 
+SELECT distinct round(f1.birdat/10000) AS YearOfBirth,        
+       (SELECT round(avg(mthsal)) FROM member f2              
+        WHERE round(f1.birdat/10000)=round(f2.birdat/10000) AND 
+        f2.sex='M') AS M_AVG_MTHSAL,                        
+       (SELECT round(avg(mthsal)) from memsoc f3              
+        WHERE round(f1.birdat/10000)=round(f3.birdat/10000) AND 
+        f3.sex='F') AS F_AVG_MTHSAL                         
+FROM member f1                                              
+WHERE f1.birdat > 19000101                                  
+ORDER by 1; 
+
+SELECT * FROM table(dbms_xplan.display);
+
+Plan hash value: 691171458
+ 
+--------------------------------------------------------------------------------------------
+| Id  | Operation               | Name     | Rows  | Bytes |TempSpc| Cost (%CPU)| Time     |
+--------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT        |          | 18932 |  1072K|       |  9689K  (1)| 00:06:19 |
+|   1 |  SORT UNIQUE            |          | 18932 |  1072K|    32G|  7160K  (1)| 00:04:40 |
+|*  2 |   HASH JOIN RIGHT OUTER |          |   510M|    27G|       |  3726  (46)| 00:00:01 |
+|   3 |    VIEW                 | VW_SSQ_1 | 13652 |   346K|       |   685   (1)| 00:00:01 |
+|   4 |     HASH GROUP BY       |          | 13652 |   159K|       |   685   (1)| 00:00:01 |
+|*  5 |      TABLE ACCESS FULL  | MEMBER   | 16757 |   196K|       |   683   (1)| 00:00:01 |
+|*  6 |    HASH JOIN RIGHT OUTER|          |  3739K|   114M|       |  1380   (2)| 00:00:01 |
+|   7 |     VIEW                | VW_SSQ_2 | 12082 |   306K|       |   685   (1)| 00:00:01 |
+|   8 |      HASH GROUP BY      |          | 12082 |   141K|       |   685   (1)| 00:00:01 |
+|*  9 |       TABLE ACCESS FULL | MEMBER   | 14318 |   167K|       |   683   (1)| 00:00:01 |
+|* 10 |     TABLE ACCESS FULL   | MEMBER   | 30953 |   181K|       |   683   (1)| 00:00:01 |
+--------------------------------------------------------------------------------------------
+ 
+Predicate Information (identified by operation id):
+---------------------------------------------------
+ 
+   2 - access("ITEM_1"(+)=ROUND("F1"."BIRDAT"/10000))
+   5 - filter("F3"."SEX"='F')
+   6 - access("ITEM_2"(+)=ROUND("F1"."BIRDAT"/10000))
+   9 - filter("F2"."SEX"='M')
+  10 - filter("F1"."BIRDAT">19000101)
+```
+
+### EOF (2024/02/23)
